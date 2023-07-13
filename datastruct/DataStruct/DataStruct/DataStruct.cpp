@@ -5,61 +5,97 @@ typedef struct NODE {
     NODE* next;
 } NODE;
 
-void AddNode(NODE* target, int data)
+class LinkedList
 {
-    NODE* node = new NODE;
-    node->data = data;
-    node->next = target->next;
-    target->next = node;
-}
+private:
+    NODE* head;
+    NODE* tail;
 
-void ShowNode(NODE* target)
-{
-    std::cout << target->data << std::endl;
-    if (target->next)
-        ShowNode(target->next);
-    else
-        return;
-}
+    int size;
+public:
+    LinkedList()
+    {
+        head = nullptr;
+        tail = nullptr;
+
+        size = 0;
+    }
+    void push_front(int data)
+    {
+        NODE* node = new NODE;
+        node->data = data;
+        node->next = nullptr;
+        size++;
+        if (head == nullptr)
+        {
+            head = node;
+            tail = node;
+        }
+        else
+        {
+            node->next = head;
+            head = node;
+        }
+    }
+    void push_back(int data)
+    {
+        NODE* node = new NODE;
+        node->data = data;
+        node->next = nullptr;
+        size++;
+        if (head == nullptr)
+        {
+            head = node;
+            tail = node;
+        }
+        else
+        {
+            tail->next = node ;
+            tail = node;
+        }
+    }
+    void insert(NODE* prev_node, int data)
+    {
+
+    }
+    void pop_back()
+    {
+
+    }
+    void pop_front()
+    {   
+        NODE* node = head;
+        if (head == tail)
+        { 
+            head = nullptr;
+            tail = nullptr;
+            delete(node);
+        }
+        else
+        {
+            head = node->next;
+            delete(node);
+        }
+        
+        
+
+    }
+    int Size()
+    {
+        return size;
+    }
+    ~LinkedList()
+    {
+
+    }
+};
 
 int main()
 {
-    // 단일 연결 리스트
-    /*
-    NODE* dummy = new NODE;
-    NODE* node1 = new NODE;
-    NODE* node2 = new NODE;
+    LinkedList list;
 
-    dummy->next = node1;
+    list.push_front(10);
+    list.push_back(20);
 
-    dummy->next->data = 10;
-    dummy->next->next = node2;
-
-    dummy->next->next->data = 20;
-    dummy->next->next->next = nullptr;
-
-    NODE* currentPtr = dummy;
-
-    while (currentPtr != nullptr)
-    {
-        currentPtr = currentPtr->next;
-        if(currentPtr != nullptr)
-            std::cout << currentPtr->data << std::endl;
-    }
-
-    delete dummy;
-    delete node1;
-    delete node2;
-
-    */
-
-    // 단일 연결 리스트 함수
-    NODE* dummy = new NODE;
-    dummy->next = nullptr;
-    AddNode(dummy, 100);
-    AddNode(dummy, 200);
-    AddNode(dummy, 300);
-    AddNode(dummy, 400);
-
-    ShowNode(dummy->next);
+    std::cout << list.Size();
 }
