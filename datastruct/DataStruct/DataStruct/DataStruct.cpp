@@ -1,101 +1,127 @@
 ﻿#include <iostream>
 
-typedef struct NODE {
+struct NODE {
     int data;
     NODE* next;
-} NODE;
+    NODE* prev;
+};
 
-class LinkedList
+template <typename T>
+class DoubleLinkedList
 {
 private:
     NODE* head;
     NODE* tail;
-
     int size;
 public:
-    LinkedList()
+    DoubleLinkedList()
     {
         head = nullptr;
         tail = nullptr;
-
         size = 0;
     }
-    void push_front(int data)
+    void Push_Front(T data)
     {
-        NODE* node = new NODE;
-        node->data = data;
-        node->next = nullptr;
-        size++;
+        NODE* newNode = new NODE;
+        newNode->data = data;
+        newNode->next = nullptr;
+        newNode->prev = nullptr;
         if (head == nullptr)
         {
-            head = node;
-            tail = node;
+            head = newNode;
+            tail = newNode;
         }
         else
         {
-            node->next = head;
-            head = node;
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
         }
-    }
-    void push_back(int data)
-    {
-        NODE* node = new NODE;
-        node->data = data;
-        node->next = nullptr;
         size++;
+    }
+    void Push_Back(T data)
+    {
+        NODE* newNode = new NODE;
+        newNode->data = data;
+        newNode->next = nullptr;
+        newNode->prev = nullptr;
         if (head == nullptr)
         {
-            head = node;
-            tail = node;
+            head = newNode;
+            tail = newNode;
         }
         else
         {
-            tail->next = node ;
-            tail = node;
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
         }
+        size++;
     }
-    void insert(NODE* prev_node, int data)
+    void Pop_Front()
     {
-
-    }
-    void pop_back()
-    {
-
-    }
-    void pop_front()
-    {   
-        NODE* node = head;
+        if (head == nullptr)
+            return;
         if (head == tail)
-        { 
+        {
+            delete(head);
             head = nullptr;
             tail = nullptr;
-            delete(node);
         }
         else
         {
-            head = node->next;
-            delete(node);
+            NODE* newNode = head;
+            head = head->next;
+            head->prev = nullptr;
+            delete(newNode);
         }
-        
-        
-
+        size--;
     }
-    int Size()
+    void Pop_Back()
     {
-        return size;
+        if (head == nullptr)
+            return;
+        if (head == tail)
+        {
+            delete(head);
+            head = nullptr;
+            tail = nullptr;
+        }
+        else
+        {
+            NODE* newNode = tail;
+            tail = tail->prev;
+            tail->next = nullptr;
+            delete(newNode);
+        }
+        size--;
     }
-    ~LinkedList()
+    void Clear()
     {
-
+        if (head != nullptr)
+        {
+            while (head->next)
+            {
+                NODE* newNode = head;
+                head = head->next;
+                delete(newNode);
+            }
+            delete(head);
+            head = nullptr;
+            tail = nullptr;
+        }
+    }
+    ~DoubleLinkedList()
+    {
+        Clear();
     }
 };
 
 int main()
 {
-    LinkedList list;
+    DoubleLinkedList<int> list;
 
-    list.push_front(10);
-    list.push_back(20);
+    list.Push_Back(10);
+    list.Pop_Front();
 
-    std::cout << list.Size();
 }
