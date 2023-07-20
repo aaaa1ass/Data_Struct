@@ -1,90 +1,92 @@
 ﻿#include <iostream>
-#include <vector>
+#include <queue>
+#define SIZE 5
 
-template<typename T>
-class VECTOR
+template <typename T>
+class LinearQueue
 {
 private:
-	int capacity = 0;
-	int size = 0;
-	T* arr;
+	int front;
+	int rear;
+	int size;
+	T array[SIZE];
 public:
-	VECTOR()
+	LinearQueue()
 	{
-		capacity = 1;
+		front = 0;
+		rear = -1;
 		size = 0;
 	}
-	void Push_Back(T data)
+	void Push(T data)
 	{
-		if (size >= capacity)
+		if (!IsFull())
 		{
-			capacity *= 2;
-			Resize(capacity);
+			array[++rear] = data;
+			size++;
 		}
-		size++;
-		T * temp = new T[size];
-		for (int i = 0; i < size - 1; i++)
-		{
-			temp[i] = arr[i];
-		}
-		temp[size - 1] = data;
-		delete arr;
-		arr = temp;
-	}
-	void Pop_Back()
-	{
-		if(size <= 0)
-		{
+		else
 			return;
-		}
-		size--;
-		arr[size] = NULL;
-	}
-	void Clear()
-	{
-		T* temp = new T;
-		delete arr;
-		arr = temp;
-		size = 0;
-	}
-	void Resize(int size)
-	{
-		capacity = size;
-		T* temp = new T[size];
 
-		for (int i = 0; i < this->size - 1; i++)
+	}
+	void Pop()
+	{
+		if (!Empty())
 		{
-			temp[i] = arr[i];
+			array[front++] = NULL;
+			size--;
 		}
-
-		delete arr;
-
-		arr = temp;
+		else
+			return;
 	}
-	int Size()
+	int & Size()
 	{
 		return size;
 	}
-	//연산자 오버로딩[]
-	T& operator [] (const int& value)
+	T & Front()
 	{
-		return arr[value];
+		if(!Empty())
+			return array[front];
 	}
-	~VECTOR()
+	T & Back()
 	{
-		delete arr;
+		if (!Empty())
+			return array[rear];
 	}
+	bool Empty()
+	{
+		if (front > rear)
+			return true;
+		else
+			return false;
+	}
+	bool IsFull()
+	{
+		if (rear >= SIZE - 1)
+			return true;
+		else
+			return false;
+	}
+
 };
+
 int main()
 {
-	VECTOR<int> v;
-	v.Push_Back(10);
-	v.Push_Back(20);
-	v.Push_Back(30);
-	v.Push_Back(40);
-	v.Pop_Back();
-	v.Resize(10);
+#pragma region 선형 큐
+	//배열의 공간에 들어간 데이터가 고정되어 데이터를 빼내더라도 초기화하지 않으면 원래 데이터가 있던 배열의 자리에 더이상 다른 것이 들어갈 수 없는 형태의 Queue
+	LinearQueue<int> queue;
+	queue.Push(-99);
+	queue.Push(2);
+	queue.Push(3);
+	queue.Push(99);
+	queue.Push(100);
 
+	queue.Pop();
+
+	std::cout << queue.Front() << std::endl;
+	std::cout << queue.Back() << std::endl;
+	std::cout << queue.Size() << std::endl;
+
+#pragma endregion
 
 	return 0;
 }

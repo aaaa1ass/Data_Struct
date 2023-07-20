@@ -135,6 +135,7 @@
     <ClInclude Include="(2023.7.14)양방향연결리스트.h" />
     <ClInclude Include="(2023.7.17)스택.h" />
     <ClInclude Include="(2023.7.18)거품정렬선택정렬.h" />
+    <ClInclude Include="(2023.7.20)벡터.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
