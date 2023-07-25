@@ -41,5 +41,14 @@
     <ClInclude Include="(2023.7.20)선형큐.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="(2023.7.21)원형큐.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="(2023.7.24)삽입정렬.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="(2023.7.25)트리.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
