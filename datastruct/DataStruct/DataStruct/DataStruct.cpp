@@ -1,154 +1,65 @@
 ﻿#include <iostream>
+#define SIZE 10
 
-#define SIZE 8
-
-class MAX_HEAP
-{
-private:
-	int heapArray[SIZE];
-	int index;
-public:
-	MAX_HEAP()
-	{
-		for (int i = 0; i < SIZE; i++)
-		{
-			heapArray[i] = NULL;
-		}
-		index = 0;
-	}
-	void Insert(int data)
-	{
-		if (index == SIZE - 1)
-			return;
-		heapArray[++index] = data;
-		//if (index > 1)
-		//{
-		//	int t = index;
-		//	while (heapArray[t / 2] < data)
-		//	{
-		//		std::swap(heapArray[t / 2], heapArray[t]);
-		//		t = t / 2;
-		//		if (t == 1)
-		//			break;
-		//	}
-		//}
-		int child = index;
-		int parent = index / 2;
-		while (child > 1)
-		{
-			if (heapArray[parent] < heapArray[child])
-			{
-				std::swap(heapArray[parent], heapArray[child]);
-			}
-			child = parent;
-			parent = child / 2;
-		}
-		PrintHeap();
-	}
-	int& Delete()
-	{
-		int max = heapArray[1];
-		if (index > 1)
-		{
-			heapArray[1] = heapArray[index];
-			heapArray[index--] = NULL;
-			//int t = 1;
-			//while (t < SIZE / 2)
-			//{
-			//	if (heapArray[t * 2] > heapArray[t * 2 + 1])
-			//	{
-			//		if (heapArray[t * 2] > heapArray[t])
-			//		{
-			//			std::swap(heapArray[t * 2], heapArray[t]);
-			//		}
-			//		else
-			//		{
-			//			break;
-			//		}
-			//		t = t * 2;
-			//	}
-			//	else
-			//	{
-			//		if (heapArray[t * 2 + 1] > heapArray[t])
-			//		{
-			//			std::swap(heapArray[t * 2 + 1], heapArray[t]);
-			//		}
-			//		else
-			//		{
-			//			break;
-			//		}
-			//		t = t * 2 + 1;
-			//	}
-			//}
-			int parent = 1;
-			int child = 2;
-			while (child <= index)
-			{
-				if (heapArray[child] < heapArray[child + 1])
-					child = child + 1;
-
-				if (heapArray[parent] < heapArray[child])
-				{
-					std::swap(heapArray[parent], heapArray[child]);
-					parent = child;
-					child = parent * 2;
-				}
-				else
-					break;
-			}
-		}
-		else
-		{
-			heapArray[1] = NULL;
-			index--;
-		}
-		PrintHeap();
-		return max;
-		
-	}
-	void PrintHeap()
-	{
-		for (int i = 1; i <= index; i++)
-		{
-			std::cout << heapArray[i] << ' ';
-		}
-		std::cout << std::endl;
-	}
-};
 
 int main()
 {
-#pragma region 힙
-	// 여러 값들 중에 최댓값, 최솟값을 빠르게 찾기 위한 자료 구조
-	
-	//최대 힙
-	//부모 노드의 키 값이 자식 노드의 키 값보다 크거나 같은 완전 이진 트리
-	MAX_HEAP heap;
-	heap.Insert(10);
-	heap.Insert(20);
-	heap.Insert(30);
-	heap.Insert(40);
-	heap.Insert(50);
-	heap.Insert(60);
-	heap.Insert(70);
+#pragma region 계수 정렬
+	// 데이터의 값을 직접 비교하지 않고 숫자가 몇 개 있는 지 세어 저장한 다음 정렬하는 알고리즘
+	// int item[SIZE] = {1,3,3,4,5,5,5,1,2,2};
+	// int arrr[SIZE] = { 0 };
+	// int arr[5] = { 0 };
+	// 
+	// for (int i = 0; i < SIZE; i++)
+	// {
+	// 	arr[item[i] - 1]++;
+	// }
+	// 
+	// int index = 0;
+	// for (int i = 0; i < 5; i++)
+	// {
+	// 	for (int j = 0; j < arr[i]; j++)
+	// 	{
+	// 		item[index++] = i + 1;
+	// 	}
+	// }
+	// 
+	// for (int i = 0; i < SIZE; i++)
+	// {
+	// 	std::cout << item[i] << ' ';
+	// }
 
-	heap.Delete();
-	heap.Delete();
-	heap.Delete();
-	heap.Delete();
-	heap.Delete();
-	heap.Delete();
-	heap.Delete();
 
-	heap.Insert(10);
-	heap.Insert(20);
-	heap.Insert(30);
-	heap.Insert(40);
-	heap.Insert(50);
-	heap.Insert(60);
-	heap.Insert(70);
 #pragma endregion
 
+#pragma region 퀵 정렬
+	//기준점을 획득한 다음 해당 기준점을 기준으로 배열을 나누고 한 쪽에는 기준점보다 작은 항목들이 위치하고 다른 쪽에는 기준점보다 큰 항목들이 위치한다
+	//나뉘어진 하위 배열에 대해 재귀적으로 퀵 정렬을 호출하여, 모든 배열이 기본 배열이 될 때까지 반복하는 알고리즘이다
+	int arr[9] = { 5,3,8,4,9,1,2,6,7 };
+	int l = 1;
+	int r = 8;
+	while (1)
+	{
+		while (arr[0] > arr[l])
+		{
+			l++;
+		}
+		while (arr[0] < arr[r])
+		{
+			r--;
+		}
+		if (r < l)
+			break;
+		std::swap(arr[l], arr[r]);
+	}
+	std::swap(arr[0], arr[r]);
 
+	for (int i = 0; i < 9; i++)
+	{
+		std::cout << arr[i] << ' ';
+	}
+#pragma endregion
+
+	 
 	return 0;
 }
