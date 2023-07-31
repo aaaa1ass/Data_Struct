@@ -117,21 +117,81 @@ public:
 		}
 		else
 		{
-			Node* node = bucket[index].head;
-			for (int i = 0; i < bucket[index].count; i++)
-				node = node->next;
-			node = newNode;
+			//Node* node = bucket[index].head;
+			//for (int i = 1; i < bucket[index].count; i++)
+			//	node = node->next;
+			//node->next = newNode;
+			//bucket[index].count++;
+			newNode->next = bucket[index].head;
+			bucket[index].head = newNode;
 			bucket[index].count++;
 		}
 
 	}
 	void Remove(int key)
 	{
+		int index = HashFunction(key);
 
+		Node* node = bucket[index].head;
+
+		if (!node)
+		{
+			std::cout << "노드가 없습니다." << std::endl;
+		}
+
+		if (bucket[index].head->key == key)
+		{
+			bucket[index].head = bucket[index].head->next;
+			delete node;
+			bucket[index].count--;
+			return;
+		}
+
+		Node* traceNode = node;
+		node = node->next;
+
+		while (node)
+		{
+			if (key == node->key)
+			{
+				traceNode->next = node->next;
+				delete node;
+				bucket[index].count--;
+				return;
+			}
+			node = node->next;
+			traceNode = traceNode->next;
+		}
+
+		std::cout << "키가 없습니다." << std::endl;
 	}
-	void Search(int key)
+	int Search(int key)
 	{
-
+		int index = HashFunction(key);
+		Node* node = bucket[index].head;
+		while (node)
+		{
+			if (key == node->key)
+			{
+				return node->value;
+			}
+			node = node->next;
+		}
+		std::cout << "키가 없습니다." << std::endl;
+		return 0;
+	}
+	void Show()
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			Node* node = bucket[i].head;
+			while (node)
+			{
+				std::cout << "( " << node->key << " : " << node->value << " ) ";
+				node = node->next;
+			}
+			std::cout << std::endl;
+		}
 	}
 
 };
@@ -158,6 +218,16 @@ int main()
 	//체이닝 기법
 	//각 해시 버킷을 연결리스트로 구성하는 방식
 	//해시 충돌 발생 시 동일한 해시 값에 해당하는 데이터들을 연결리스트로 연결하여 저장
+
+	HashTable hashTable;
+
+	
+	hashTable.Insert(5, 500);
+	hashTable.Insert(10, 100);
+
+	hashTable.Remove(10);
+
+	hashTable.Search(10);
 
 	//개방 주소법
 	/*충돌 발생 시 빈 버킷에 데이터를 저장하는 방식
