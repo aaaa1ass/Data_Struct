@@ -1,65 +1,89 @@
 ﻿#include <iostream>
 #include <vector>
-#pragma region 그래프
-//정점과 간선으로 이루어진 자료구조
-//정점 vertex : 노드를 의미하며, 각 노드에는 데이터가 저장된다
-//간선 edge : 링크라고 하며, 노드간의 관계를 나타낸다
-//차수 degree : 무방향 그래프에서 하나의 정점에 인접한 정점의 수
-//진출 차수 out-degree : 방향 그래프에서 사용되며, 한 노드에서 외부로 향하는 간선의 수
-//진입 차수 in-degree : 방향 그래프에서 사용되며, 외부 노드에서 들어오는 간선의 수
+#include <queue>
+
+std::vector<int> bfsGraph[6];
+std::vector<int> dfsGraph[6];
+bool dfsCheck[6] = { false };
+bool bfsCheck[6] = { false };
+
+#pragma region BFS 너비 우선 탐색
+//시작 노드를 방문한 후 시작 노드에 있는 인접한 모든 노드들을 탐색하는 방법
+//더이상 방문하지 않은 노드가 없을 때까지, 방문하지 않은 모든 노드에 대해서도 BFS를 적용
+std::queue<int> queue;
+void BFS(int start)
+{
+	queue.push(start);
+	bfsCheck[start] = true;
+	while (!queue.empty())
+	{
+		int temp = queue.front();
+		queue.pop();
+
+		std::cout << temp << std::endl;
+
+		for (int i = 0; i < bfsGraph[temp].size(); i++)
+		{
+			if (bfsCheck[bfsGraph[temp][i]] == false)
+			{
+				queue.push(bfsGraph[temp][i]);
+				bfsCheck[bfsGraph[temp][i]] = true;
+			}
+		}
+	}
+}
 #pragma endregion
+
+#pragma region DFS 깊이 우선 탐색
+//시작점부터 다음 경로로 넘어가기 전에 해당 경로를 완벽하게 탐색하고 넘어가는 방법
+void DFS(int start)
+{
+	std::cout << start << std::endl;
+	dfsCheck[start] = true;
+
+	for (int i = 0;i < dfsGraph[start].size(); i++)
+	{
+		if (dfsCheck[dfsGraph[start][i]] == false)
+		{	
+			DFS(dfsGraph[start][i]);
+		}
+	}
+}
+#pragma endregion
+
+
 
 int main()
 {
-#pragma region 인접 행렬
-	//그래프의 연결 관계를 이차원 배열로 나타내는 방식
-	//int buffer[4][4] = {0,};
-	//int vertex = 0;
-	//int edge = 0;
-	//int x, y = 0;
-	//std::cin >> vertex >> edge;
-	//for (int i = 0; i < edge; i++)
-	//{
-	//	std::cin >> x >> y;
-	//	buffer[x][y] = 1;
-	//	buffer[y][x] = 1;
-	//}
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	for (int j = 0; j < 4; j++)
-	//	{
-	//		std::cout << buffer[i][j];
-	//	}
-	//	std::cout << std::endl;
-	//}
+#pragma region BFS
+	bfsGraph[0].push_back(1);
+	bfsGraph[0].push_back(2);
+	bfsGraph[1].push_back(0);
+	bfsGraph[1].push_back(3);
+	bfsGraph[2].push_back(0);
+	bfsGraph[2].push_back(4);
+	bfsGraph[2].push_back(5);
+	bfsGraph[3].push_back(1);
+	bfsGraph[4].push_back(2);
+	bfsGraph[5].push_back(2);
+	//BFS(0);
 #pragma endregion
 
-#pragma region 인접 리스트
-	//그래프의 연결 관계를 vector의 배열로 나타내는 방식
-	int node = 0;
-	int edge = 0;
-
-	std::vector<int> data[4];
-
-	std::cin >> node >> edge;
-
-	int x, y;
-	for (int i = 0; i < edge; i++)
-	{
-		std::cin >> x >> y;
-		data[x].push_back(y);
-		data[y].push_back(x);
-	}
-	for (int i = 0; i < node; i++)
-	{
-		std::cout << i;
-		for (int j = 0; j < data[i].size(); j++)
-		{
-			std::cout << data[i][j];
-		}
-		std::cout << std::endl;
-	}
+#pragma region DFS
+	dfsGraph[0].push_back(1);
+	dfsGraph[0].push_back(2);
+	dfsGraph[0].push_back(3);
+	dfsGraph[1].push_back(0);
+	dfsGraph[1].push_back(4);
+	dfsGraph[2].push_back(0);
+	dfsGraph[3].push_back(0);
+	dfsGraph[3].push_back(5);
+	dfsGraph[4].push_back(1);
+	dfsGraph[5].push_back(3);
+	DFS(0);
 #pragma endregion
+
+
 
 	return 0;
 }
