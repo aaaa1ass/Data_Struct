@@ -1,89 +1,177 @@
 ﻿#include <iostream>
-#include <vector>
-#include <queue>
 
-std::vector<int> bfsGraph[6];
-std::vector<int> dfsGraph[6];
-bool dfsCheck[6] = { false };
-bool bfsCheck[6] = { false };
-
-#pragma region BFS 너비 우선 탐색
-//시작 노드를 방문한 후 시작 노드에 있는 인접한 모든 노드들을 탐색하는 방법
-//더이상 방문하지 않은 노드가 없을 때까지, 방문하지 않은 모든 노드에 대해서도 BFS를 적용
-std::queue<int> queue;
-void BFS(int start)
+#pragma region 이진 탐색 트리 (BST)
+//임의의 키를 가진 원소를 삽입, 삭제, 검색할 때 효율적인 트리
+struct Node
 {
-	queue.push(start);
-	bfsCheck[start] = true;
-	while (!queue.empty())
+	int data;
+	Node* left;
+	Node* right;
+};
+
+Node* Insert(Node * root,int data)
+{
+	if (root == nullptr)
 	{
-		int temp = queue.front();
-		queue.pop();
-
-		std::cout << temp << std::endl;
-
-		for (int i = 0; i < bfsGraph[temp].size(); i++)
+		root = new Node;
+		root->data = data;
+		root->left = nullptr;
+		root->right = nullptr;
+	}
+	else if(root->data > data)
+	{
+		root->left = Insert(root->left, data);
+	}
+	else
+	{
+		root->right = Insert(root->right, data);
+	}
+	return root;
+}
+//Node* Delete(Node* root,int key)
+//{
+//	if (root->data == key)
+	//{
+	//	if (root->left == nullptr && root->right == nullptr)
+	//	{
+	//		delete root;
+	//	}
+	//	else if (root->left && root->right == nullptr)
+	//	{
+	//		root->data = root->left->data;
+	//		delete root->left;
+	//		root->left = nullptr;
+	//	}
+	//	else if (root->left == nullptr && root->right)
+	//	{
+	//		root->data = root.
+	//	}
+	//}
+//	else if (root->data > key)
+//	{
+//		root->left = Delete(root->left, key);
+//	}
+//	else
+//	{
+//		root->right = Delete(root->right, key);
+//	}
+//}
+void* Delete(Node* root, int key)
+{
+	if (root == nullptr)
+		return;
+	
+	Node* node = root;
+	Node* prev = nullptr;
+	while (node->data != key)
+	{
+		prev = node;
+		if (root->data > key)
 		{
-			if (bfsCheck[bfsGraph[temp][i]] == false)
-			{
-				queue.push(bfsGraph[temp][i]);
-				bfsCheck[bfsGraph[temp][i]] = true;
-			}
+			node = node->left;
+		}
+		else
+		{
+			node = node->right;
 		}
 	}
-}
-#pragma endregion
-
-#pragma region DFS 깊이 우선 탐색
-//시작점부터 다음 경로로 넘어가기 전에 해당 경로를 완벽하게 탐색하고 넘어가는 방법
-void DFS(int start)
-{
-	std::cout << start << std::endl;
-	dfsCheck[start] = true;
-
-	for (int i = 0;i < dfsGraph[start].size(); i++)
+	if (prev == nullptr)
 	{
-		if (dfsCheck[dfsGraph[start][i]] == false)
-		{	
-			DFS(dfsGraph[start][i]);
+		delete root;
+		root = nullptr;
+	}
+	else if (node->left == nullptr && node->right == nullptr)
+	{
+		if (prev->left == node)
+		{
+			prev->left = nullptr;
+			delete node;
+		}
+		else
+		{
+			prev->right = nullptr;
+			delete node;
 		}
 	}
+	else if (node->left && node->right == nullptr)
+	{
+		if (prev->left == node)
+		{
+			prev->left = node->left;
+			delete node;
+		}
+		else
+		{
+			prev->right = node->left;
+			delete node;
+		}
+	}
+	else if (node->left == nullptr && node->right)
+	{
+		if (prev->left == node)
+		{
+			prev->left = node->right;
+			delete node;
+		}
+		else
+		{
+			prev->right = node->right;
+			delete node;
+		}
+	}
+	else
+	{
+		prev = node->right;
+		while (prev->left != nullptr)
+		{
+			prev = prev->left;
+		}
+		node->data = prev->data;
+
+	}
+}
+int FindMax(Node* root)
+{
+	if (root == nullptr)
+		return 0xcccccccc;
+	//Node* node = root;
+	//while (node->right != nullptr)
+	//{
+	//	node = node->right;
+	//}
+	//return node->data;
+	if (root->right == nullptr)
+		return root->data;
+	else
+		return FindMax(root->left);
+}
+int FindMin(Node* root)
+{
+	if (root == nullptr)
+		return 0xcccccccc;	
+	//Node* node = root;
+	//while (node->left != nullptr)
+	//{
+	//	node = node->left;
+	//}
+	//return node->data;
+	if (root->left == nullptr)
+		return root->data;
+	else
+		return FindMin(root->left);
 }
 #pragma endregion
-
 
 
 int main()
 {
-#pragma region BFS
-	bfsGraph[0].push_back(1);
-	bfsGraph[0].push_back(2);
-	bfsGraph[1].push_back(0);
-	bfsGraph[1].push_back(3);
-	bfsGraph[2].push_back(0);
-	bfsGraph[2].push_back(4);
-	bfsGraph[2].push_back(5);
-	bfsGraph[3].push_back(1);
-	bfsGraph[4].push_back(2);
-	bfsGraph[5].push_back(2);
-	//BFS(0);
-#pragma endregion
+	Node* root = nullptr;
+	root = Insert(root,10);
+	root = Insert(root, 5);
 
-#pragma region DFS
-	dfsGraph[0].push_back(1);
-	dfsGraph[0].push_back(2);
-	dfsGraph[0].push_back(3);
-	dfsGraph[1].push_back(0);
-	dfsGraph[1].push_back(4);
-	dfsGraph[2].push_back(0);
-	dfsGraph[3].push_back(0);
-	dfsGraph[3].push_back(5);
-	dfsGraph[4].push_back(1);
-	dfsGraph[5].push_back(3);
-	DFS(0);
-#pragma endregion
-
-
-
+	std::cout << FindMax(root);
+	//std::cout << FindMin(root);
+	
 	return 0;
 }
+
