@@ -65,5 +65,11 @@
     <ClInclude Include="(2023.8.3)그래프탐색방법.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="(2023.8.3)이진탐색트리.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="(2023.8.4)하노이탑.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

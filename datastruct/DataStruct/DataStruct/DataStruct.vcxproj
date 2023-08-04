@@ -145,6 +145,8 @@
     <ClInclude Include="(2023.7.28)해시테이블.h" />
     <ClInclude Include="(2023.8.1)그래프.h" />
     <ClInclude Include="(2023.8.3)그래프탐색방법.h" />
+    <ClInclude Include="(2023.8.3)이진탐색트리.h" />
+    <ClInclude Include="(2023.8.4)하노이탑.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
